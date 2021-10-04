@@ -121,10 +121,18 @@ class Snake {
     }
     
     generateFood() {
-        var x = Math.floor(Math.random() * this.n);
-        var y = Math.floor(Math.random() * this.m);
-    
-        document.getElementById(`field-${x}-${y}`).classList.add('food');
+        while (true) {
+            var x = Math.floor(Math.random() * this.n);
+            var y = Math.floor(Math.random() * this.m);
+
+            let generatedField = document.getElementById(`field-${x}-${y}`);
+
+            if (generatedField?.classList.contains('snakePart'))
+                continue;
+
+            generatedField.classList.add('food');
+            break;
+        }
     }
     
     generateInitialSnake() {
