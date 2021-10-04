@@ -1,0 +1,33 @@
+html {
+    height: 100%;
+  }
+  body {
+    min-height: 100%;
+  }
+body {
+    width: 100%;
+    background: black;
+    color: black;
+    position: absolute;
+    display: block;
+    border: 0px;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+.field {
+    border: 1px solid green;
+    box-sizing: border-box;
+    position: relative;
+    display: block;
+    float: left;
+    color: white;
+}
+
+.food, .snakePart {
+    background-color: green;
+    border: 1px solid black;
+    color: black;
+}
