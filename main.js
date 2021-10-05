@@ -2,7 +2,7 @@ class ListNode {
     constructor(data, prev = null, next = null) {
         this.data = data
         this.prev = prev
-        this.next = next      
+        this.next = next
     }
 }
 
@@ -13,7 +13,7 @@ class LinkedList {
     }
 
     size() {
-        let count = 0; 
+        let count = 0;
         let node = this.head;
         while (node) {
             count++;
@@ -84,10 +84,10 @@ class Snake {
         this.m = 0;
         this.n = 0;
         this.snake = null;
-        this.moving_direction = 0; // 0 - right, 1 - left, 2 - down, 3 - up
+        this.moving_direction = 2; // 0 - right, 1 - left, 2 - down, 3 - up
         this.movingInterval = null;
     }
-    
+
     init() {
         var table = document.getElementById("table");
         var tableWidth = table.clientWidth;
@@ -95,7 +95,7 @@ class Snake {
         this.m = Math.round(tableWidth/this.field_size) - 1;
         this.n = Math.round(tableHeight/this.field_size) - 1;
 
-       
+
         for (let i = 0; i < this.n; i++) {
             for (let j=0; j < this.m; j++) {
                 let field = document.createElement("div");
@@ -119,7 +119,7 @@ class Snake {
             this.moveSnake();
         }, 100);
     }
-    
+
     generateFood() {
         while (true) {
             var x = Math.floor(Math.random() * this.n);
@@ -134,7 +134,7 @@ class Snake {
             break;
         }
     }
-    
+
     generateInitialSnake() {
         this.snake = new LinkedList();
         this.snake.addToHead(new SnakeNodeData(0, 4));
@@ -148,7 +148,7 @@ class Snake {
 
         [].forEach.call(elems, function(el) {
             el.classList.remove("snakePart");
-        }); 
+        });
 
         let lastNode = this.snake.getFirst();
         if (lastNode) {
@@ -173,9 +173,11 @@ class Snake {
                 case 3: x--; break;
             }
 
-            if (x < 0 || x >= this.n || y < 0 || y >= this.m) {
+            if (x < 0 || x >= this.n || y < 0 || y >= this.m ||
+                document.getElementById(`field-${x}-${y}`)?.classList.contains('snakePart')) {
                 clearInterval(this.movingInterval);
                 alert('Izgubio si decko!');
+                return;
             }
 
             this.snake.addToHead(new SnakeNodeData(x, y));
@@ -185,11 +187,11 @@ class Snake {
 
                 [].forEach.call(elems, function(el) {
                     el.classList.remove("food");
-                }); 
+                });
 
                 this.generateFood();
             }
-            else 
+            else
             {
                 this.snake.removeFromTail();
             }
