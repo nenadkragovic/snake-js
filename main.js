@@ -86,10 +86,18 @@ class Snake {
         this.snake = null;
         this.moving_direction = 2; // 0 - right, 1 - left, 2 - down, 3 - up
         this.movingInterval = null;
+		this.score = 0;
     }
 
     init() {
         var table = document.getElementById("table");
+		table.innerHTML = "";
+        this.m = 0;
+        this.n = 0;
+        this.snake = null;
+        this.moving_direction = 2; // 0 - right, 1 - left, 2 - down, 3 - up
+        this.movingInterval = null;
+		this.score = 0;
         var tableWidth = table.clientWidth;
         var tableHeight = table.clientHeight;
         this.m = Math.round(tableWidth/this.field_size) - 1;
@@ -117,7 +125,7 @@ class Snake {
 
         this.movingInterval = setInterval(() => {
             this.moveSnake();
-        }, 100);
+        }, 70);
     }
 
     generateFood() {
@@ -176,7 +184,9 @@ class Snake {
             if (x < 0 || x >= this.n || y < 0 || y >= this.m ||
                 document.getElementById(`field-${x}-${y}`)?.classList.contains('snakePart')) {
                 clearInterval(this.movingInterval);
-                alert('Izgubio si decko!');
+				if(confirm(`Izgubio si decko! Imas ${this.score} poena. Oces li opet?`)){
+					this.init();
+				}
                 return;
             }
 
@@ -190,6 +200,7 @@ class Snake {
                 });
 
                 this.generateFood();
+				this.score ++;
             }
             else
             {
@@ -198,18 +209,23 @@ class Snake {
             this.renderSnake();
         }
     }
+
+	changeDirection(direction) {
+        let head = this.snake.getFirst();
+		switch (direction) {
+			case 'ArrowRight': if (!document.getElementById(`field-${head.data.x}-${head.data.y + 1}`)?.classList.contains('snakePart')) snake.moving_direction = 0; break;
+			case 'ArrowLeft': if (!document.getElementById(`field-${head.data.x }-${head.data.y - 1}`)?.classList.contains('snakePart')) snake.moving_direction = 1; break;
+			case 'ArrowDown': if (!document.getElementById(`field-${head.data.x + 1}-${head.data.y}`)?.classList.contains('snakePart'))snake.moving_direction = 2; break;
+			case 'ArrowUp': if (!document.getElementById(`field-${head.data.x -1 }-${head.data.y}`)?.classList.contains('snakePart')) snake.moving_direction = 3; break;
+		}
+	}
 };
 
 let snake = new Snake(50);
 
 document.addEventListener('keydown', (event) => {
     var code = event.code;
-    switch (code) {
-        case 'ArrowRight': snake.moving_direction = 0; break;
-        case 'ArrowLeft': snake.moving_direction = 1; break;
-        case 'ArrowDown': snake.moving_direction = 2; break;
-        case 'ArrowUp': snake.moving_direction = 3; break;
-    }
+    snake.changeDirection(code);
   }, false);
 
 snake.init();
